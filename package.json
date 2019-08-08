@@ -1,0 +1,15 @@
+{
+	"name": "documented",
+	"version": "0.1.0",
+	"description": "document custom documents using custom fields",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron .",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "ajilk",
+	"license": "ISC",
+	"devDependencies": {
+		"electron": "^6.0.1"
+	}
+}

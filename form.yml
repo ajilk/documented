@@ -1,0 +1,8 @@
+- field: 
+    id: "firstName"
+    label: "First Name"
+    type: "text"
+- field: 
+    id: "lastName"
+    label: "Last Name"
+    type: "text"
