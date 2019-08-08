@@ -1,8 +1,8 @@
-- field: 
-    id: "firstName"
-    label: "First Name"
-    type: "text"
-- field: 
-    id: "lastName"
-    label: "Last Name"
-    type: "text"
+- id: "firstName"
+  label: "First Name"
+  type: "text"
+  placeholder: 'e.g. John'
+
+- id: "lastName"
+  label: "Last Name"
+  type: "text"
