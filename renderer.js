@@ -2,13 +2,17 @@ const { ipcRenderer } = require('electron')
 
 const loadBtn = document.getElementById('loadBtn')
 
-loadBtn.addEventListener('click', () => {
-	ipcRenderer.send('load-fields', 'path/to/form.yml')
-})
+loadBtn.addEventListener('click', (event) => {
+	ipcRenderer.send('load-file');
+});
+
+ipcRenderer.on('selected-file', (event, path) => {
+	document.getElementById('path').innerHTML = path
+});
 
 ipcRenderer.on('render-fields', (event, arg) => {
 	const fields = arg;
-	const body = document.querySelector('body');
+	const root = document.querySelector('root');
 	const form = document.createElement('form');
 	form.setAttribute('class', 'p-5');
 	fields.forEach(field => {
@@ -27,5 +31,5 @@ ipcRenderer.on('render-fields', (event, arg) => {
 		div.append(input);
 		form.append(div);
 	});
-	body.append(form);
+	root.append(form);
 })

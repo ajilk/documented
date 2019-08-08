@@ -1,10 +1,12 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog} = require('electron');
 yaml = require('js-yaml');
 fs = require('fs');
 
 // Create the browser window
 function createWindow() {
 	let win = new BrowserWindow({
+		x: 100,
+		y: 80,
 		width: 500,
 		height: 800,
 		resizable: false,
@@ -23,6 +25,14 @@ function createWindow() {
 
 app.on('ready', createWindow);
 app.on('window-all-closed', () => app.quit());
+
+ipcMain.on('load-file', (event) => {
+	dialog.showOpenDialog({
+		properties: ['openFile']
+	}, (file) => {
+		if (file) event.sender.send('selected-file', file);
+	});
+});
 
 ipcMain.on('load-fields', (event, arg) => {
 	try {

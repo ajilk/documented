@@ -15,5 +15,6 @@ Takes the form fields and sends it to the render to render the specified fields.
 	- (load only form at a time, load -> close)
 	- submit = enter (no submit button) -> opens dialog to ask save location
 - render obtained data in markdown and pdf 
+- create form.yml from the app
 
 
