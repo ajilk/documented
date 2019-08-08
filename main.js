@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 
 // Create the browser window
 function createWindow() {
@@ -18,3 +18,7 @@ function createWindow() {
 
 app.on('ready', createWindow);
 app.on('window-all-closed', () => app.quit())
+
+ipcMain.on('load-fields', (event, arg) => {
+	event.sender.send('render-fields', `fields from ${arg}`)
+})
