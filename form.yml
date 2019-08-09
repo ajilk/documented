@@ -1,8 +1,10 @@
-- id: "firstName"
-  label: "First Name"
-  type: "text"
-  placeholder: 'e.g. John'
+title: New User
+fields:
+  - id: "firstName"
+    label: "First Name"
+    type: "text"
+    placeholder: "e.g. John"
 
-- id: "lastName"
-  label: "Last Name"
-  type: "text"
+  - id: "lastName"
+    label: "Last Name"
+    type: "text"

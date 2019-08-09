@@ -17,16 +17,23 @@
     <title>Documented</title>
   </head>
   <body>
-    <div id="root" class="container w-75 py-5">
+    <div id="navbar" class="container w-75 px-0 py-2">
+      <nav class="navbar navbar-dark justify-content-between">
+        <a id="formTitle" class="navbar-brand"></a>
+        <button id="closeBtn" class="btn btn-outline-dark">Close</button>
+      </nav>
+    </div>
+    <div id="landing" class="container w-75 py-5">
       <div class="col-12 text-center">
         <h1 class="display-4 font-weight-light">documented</h1>
       </div>
       <div class="col-12 pt-2">
         <button id="loadBtn" type="button" class="btn btn-block btn-outline-dark">Load</button>
       </div>
-	  <small id='path'></small>
-	  <iframe class="py-5 px-2" src="files.html" height="500px" width="100%" frameborder="0"></iframe>
+      <small id="path"></small>
+      <iframe class="py-5 px-2" src="files.html" height="500px" width="100%" frameborder="0"></iframe>
     </div>
+    <div id="formWrapper" class="container w-75 py-3"></div>
 
     <script src="./renderer.js"></script>
     <!-- Optional JavaScript -->

@@ -1,10 +1,13 @@
-const { app, BrowserWindow, ipcMain, dialog} = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 yaml = require('js-yaml');
 fs = require('fs');
+ejs = require('ejs');
+
+let win;
 
 // Create the browser window
 function createWindow() {
-	let win = new BrowserWindow({
+	win = new BrowserWindow({
 		x: 100,
 		y: 80,
 		width: 500,
@@ -30,15 +33,29 @@ ipcMain.on('load-file', (event) => {
 	dialog.showOpenDialog({
 		properties: ['openFile']
 	}, (file) => {
-		if (file) event.sender.send('selected-file', file);
+		if (file) {
+			var form = loadForm(file[0]);
+			event.sender.send('render-form', form);
+		}
 	});
 });
 
-ipcMain.on('load-fields', (event, arg) => {
+ipcMain.on('form-submit', (event, values) => {
+	ejs.renderFile('newUser.md', values, (err, str) => {
+		if (err) console.log(err)
+		// Todo: Write to specified location
+		else fs.writeFile('newUser_filled.md', str, (err) => {
+			if (err) throw err;
+		});
+	});
+	event.sender.send('close')
+});
+
+function loadForm(filePath) {
 	try {
-		var fields = yaml.safeLoad(fs.readFileSync('./form.yml', 'utf8'));
+		var fields = yaml.safeLoad(fs.readFileSync(filePath, 'utf8'));
 	} catch (e) {
 		console.log(e);
 	}
-	event.sender.send('render-fields', fields);
-})
+	return fields;
+}

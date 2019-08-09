@@ -1,3 +1,11 @@
+#navbar {
+	display: none;
+}
+
+#formWrapper {
+	display: none;
+}
+
 /* Hide scrollbar */
 html {
   overflow: scroll;
