@@ -60,5 +60,5 @@ function _submit() {
 		id = field['id'];
 		formValues[id] = document.getElementById(id).value;
 	})
-	ipcRenderer.send('form-submit', formValues);
+	ipcRenderer.send('submit-form', formValues);
 }

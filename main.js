@@ -3,6 +3,7 @@ yaml = require('js-yaml');
 fs = require('fs');
 ejs = require('ejs');
 
+let DEBUG = true
 let win;
 
 // Create the browser window
@@ -17,7 +18,7 @@ function createWindow() {
 			nodeIntegration: true
 		}
 	});
-	win.webContents.openDevTools()
+	if (DEBUG) win.webContents.openDevTools()
 
 	win.loadFile('index.html');
 
@@ -31,7 +32,8 @@ app.on('window-all-closed', () => app.quit());
 
 ipcMain.on('load-file', (event) => {
 	dialog.showOpenDialog({
-		properties: ['openFile']
+		properties: ['openFile'],
+		defaultPath: __dirname
 	}, (file) => {
 		if (file) {
 			var form = loadForm(file[0]);
@@ -40,15 +42,23 @@ ipcMain.on('load-file', (event) => {
 	});
 });
 
-ipcMain.on('form-submit', (event, values) => {
+ipcMain.on('submit-form', (event, values) => {
 	ejs.renderFile('newUser.md', values, (err, str) => {
 		if (err) console.log(err)
-		// Todo: Write to specified location
-		else fs.writeFile('newUser_filled.md', str, (err) => {
-			if (err) throw err;
-		});
+		else {
+			const options = {
+				title: "Save",
+				defaultPath: __dirname + '/newUser_FILLED.md',
+				filters: [{ extensions: ['md'] }]
+			}
+			dialog.showSaveDialog(options, (filename) => {
+				fs.writeFile(filename, str, (err) => {
+					if (err) throw err;
+				});
+				event.sender.send('close')
+			});
+		}
 	});
-	event.sender.send('close')
 });
 
 function loadForm(filePath) {
