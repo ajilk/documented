@@ -1,9 +1,24 @@
+* {
+  user-select: none;
+}
+
 #navbar {
-	display: none;
+  display: none;
 }
 
 #formWrapper {
-	display: none;
+  display: none;
+}
+
+/* Disable orange focus outline */
+button:focus,
+button:active:focus,
+button.active:focus,
+button.focus,
+button:active.focus,
+button.active.focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Hide scrollbar */
