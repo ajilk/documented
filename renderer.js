@@ -5,7 +5,7 @@ const closeBtn = document.getElementById('closeBtn')
 var form
 
 loadBtn.addEventListener('click', (event) => {
-	ipcRenderer.send('load-file');
+	ipcRenderer.send('load-form');
 });
 
 closeBtn.addEventListener('click', (event) => {
@@ -16,7 +16,7 @@ closeBtn.addEventListener('click', (event) => {
 	while (formWrapper.firstChild) formWrapper.removeChild(formWrapper.firstChild);
 });
 
-ipcRenderer.on('close', (event) => {
+ipcRenderer.on('file-saved', (event) => {
 	closeBtn.click();
 });
 
@@ -47,7 +47,7 @@ ipcRenderer.on('render-form', (event, _form) => {
 	});
 	const submitBtn = document.createElement('input')
 	submitBtn.setAttribute('type', 'button')
-	submitBtn.setAttribute('value', 'Submit')
+	submitBtn.setAttribute('value', 'document')
 	submitBtn.setAttribute('class', 'btn btn-outline-dark float-right')
 	submitBtn.setAttribute('onclick', '_submit()')
 	htmlForm.append(submitBtn);
