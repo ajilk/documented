@@ -1,10 +1,16 @@
+// TODO: crazy refactoring
+// TODO: flow illustration
+// TODO: better channel naming
+
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+DataStore = require('nedb')
 yaml = require('js-yaml');
 fs = require('fs');
 ejs = require('ejs');
 
 let DEBUG = true
 let mainWindow;
+const recentFiles = new DataStore({ filename: './userConfig', autoload: true });
 
 // Create the browser window
 function createWindow() {
@@ -29,6 +35,13 @@ app.on('ready', createWindow);
 app.on('window-all-closed', () => app.quit());
 app.on('activate', () => mainWindow.restore());
 
+ipcMain.on('load: recentFiles', (event) => {
+	// Send over the ones that have valid path
+	recentFiles.find({ path: { $exists: true } }, (err, recentFiles) => {
+		event.sender.send('render: recentFiles', recentFiles)
+	});
+});
+
 ipcMain.on('load-form', (event) => {
 	dialog.showOpenDialog(mainWindow, {
 		properties: ['openFile', 'multiSelections'],
@@ -36,8 +49,14 @@ ipcMain.on('load-form', (event) => {
 		filters: [{ name: 'Markdown', extensions: ['yml', 'yaml'] }]
 	}).then(result => {
 		if (!result.canceled) {
-			formFile = result.filePaths[0]
-			form = yaml.safeLoad(fs.readFileSync(formFile, 'utf8'));
+			formFilePath = result.filePaths[0]
+			form = yaml.safeLoad(fs.readFileSync(formFilePath, 'utf8'));
+			formName = form['name'];
+			// Add to list if it is not on the list already
+			recentFiles.find({ path: formFilePath }, (err, forms) => {
+				if (forms == undefined || forms.length == 0)
+					recentFiles.insert({ name: formName, path: formFilePath });
+			});
 			event.sender.send('render-form', form);
 		}
 	}).catch(error => console.log(error));
@@ -61,5 +80,19 @@ ipcMain.on('submit-form', (event, values) => {
 				}
 			})
 		}).catch(error => console.log(error));
+	});
+});
+
+ipcMain.on('remove-form', (event, id) => {
+	recentFiles.remove({ _id: id });
+});
+
+// Repeated Code
+ipcMain.on('open: form', (event, id) => {
+	recentFiles.find({ _id: id }, (error, form) => {
+		const path = form[0]['path']
+		const fields = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
+		recentFiles.insert({ name: form['name'], path: form['path'] });
+		event.sender.send('render-form', fields);
 	});
 });

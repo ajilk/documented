@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="styles/style.css" />
 
     <!-- Font Awesome -->
@@ -26,26 +27,28 @@
         class="navbar navbar-dark justify-content-between fixed-top px-5 mb-5"
         style="background-color: rgb(39,44,49);"
       >
-        <a id="formTitle" class="navbar-brand" href="#" onclick="return _cancel()"></a>
-        <input type="button" value="document" class="btn btn-outline-light" onclick="_submit()" />
+        <a id="formName" class="navbar-brand" href="#" onclick="return _close()"></a>
+        <button type="button" class="btn btn-outline-light" onclick="_submit()">document</button>
       </nav>
     </div>
     <div id="landing" class="container w-75 pt-5">
       <div class="col-12 text-center">
         <h1 class="display-4 font-weight-light">documented</h1>
       </div>
-      <div class="col-12 pt-2">
+      <div class="col-12 py-2">
         <button id="loadBtn" type="button" class="btn btn-block btn-outline-dark">Load</button>
       </div>
-      <small id="path"></small>
-      <iframe class="py-5 px-2" src="files.html" height="500px" width="100%" frameborder="0"></iframe>
+      <div class="listView m-3">
+        <ul id="recentFiles" class="list-group list-group-flush"></ul>
+      </div>
+      <!-- <iframe class="py-5 px-2" src="files.html" height="500px" width="100%" frameborder="0"></iframe> -->
     </div>
     <div id="formWrapper" class="container px-5 pt-3">
-		<form id="form"></form>
-		<button id="cancelBtn" class="btn btn-block btn-outline-danger">
-			cancel
-		</button>
-	</div>
+      <form id="form"></form>
+      <button id="cancelBtn" class="btn btn-block btn-outline-danger">
+        cancel
+      </button>
+    </div>
 
     <script src="./renderer.js"></script>
     <!-- Optional JavaScript -->

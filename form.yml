@@ -1,4 +1,4 @@
-title: New User
+name: New User
 fields:
   - id: "firstName"
     label: "First Name"

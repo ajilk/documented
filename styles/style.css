@@ -10,6 +10,26 @@
   display: none;
 }
 
+.recentForm:hover {
+	background-color: rgb(39,44,49);
+	color: white;
+}
+
+.recentForm button {
+	color: lightgray !important;
+}
+
+.recentForm button:hover {
+	color: white !important;
+}
+
+.listView ul{
+	height: 200px;
+	width: 100%;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
 /* Disable orange focus outline */
 button:focus,
 button:active:focus,
