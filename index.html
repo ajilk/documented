@@ -28,7 +28,10 @@
         style="background-color: rgb(39,44,49);"
       >
         <a id="formName" class="navbar-brand" href="#" onclick="return _close()"></a>
-        <button type="button" class="btn btn-outline-light" onclick="_submit()">document</button>
+        <button id="toExportOptionsBtn" type="button" class="btn btn-outline-light" onclick="_viewExportOptions()">
+          >
+        </button>
+        <button id="toFormBtn" type="button" class="btn btn-outline-light" onclick="_viewForm()"><</button>
       </nav>
     </div>
     <div id="landing" class="container w-75 pt-5">
@@ -48,6 +51,35 @@
       <button id="cancelBtn" class="btn btn-block btn-outline-danger">
         cancel
       </button>
+    </div>
+    <div id="exportOptionsWrapper" class="container w-75 px-5 pt-5">
+      <!-- format ex. yaml, json, md->pdf, tex->pdf -->
+      <div class="row px-0 pb-3">
+        <div class="col-3 px-0 pr-auto my-auto">
+          <label class="my-0">Format: </label>
+        </div>
+        <div class="col px-0">
+          <select class="custom-select">
+            <option value="1">YAML (.yml)</option>
+            <option value="2">JSON (.json)</option>
+            <option selected value="3">Markdown (.md)</option>
+            <option value="4">LaTeX (.tex)</option>
+          </select>
+        </div>
+      </div>
+      <!-- if md or tex -->
+      <!-- then template -->
+      <div class="row px-0 pb-5">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="chooseTemplateBtn" />
+          <label id="templateLabel" class="custom-file-label" for="customFile">Choose file</label>
+        </div>
+      </div>
+      <div class="row px-0">
+        <button id="documentBtn" type="button" class="btn btn-block btn-outline-dark" onclick="_submit()">
+          document
+        </button>
+      </div>
     </div>
 
     <script src="./renderer.js"></script>

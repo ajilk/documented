@@ -2,6 +2,7 @@ const { ipcRenderer } = require('electron')
 
 const loadBtn = document.getElementById('loadBtn')
 const cancelBtn = document.getElementById('cancelBtn')
+const chooseTemplateBtn = document.getElementById('chooseTemplateBtn')
 let FORM
 
 ipcRenderer.send('load: recentFiles');
@@ -20,7 +21,7 @@ ipcRenderer.on('render: recentFiles', (event, files) => {
 						<small class="text-muted"> &mdash; ${file['path'].substring(0, 20).concat('...')}</small>
 					</div>
 					<button type="button" class="btn p-0 m-0" onclick="_removeForm('${file['_id']}')">
-					<i class="fas fa-times"></i>
+						<i class="fas fa-times"></i>
 					</button>
 				</div>
 			</li>`
@@ -29,14 +30,20 @@ ipcRenderer.on('render: recentFiles', (event, files) => {
 });
 
 loadBtn.addEventListener('click', (event) => {
-	ipcRenderer.send('load-form');
+	ipcRenderer.send('load: form');
 });
 
 cancelBtn.addEventListener('click', _close);
 
+chooseTemplateBtn.addEventListener('change', () => {
+	fileName = chooseTemplateBtn.value
+	// extract filename from path
+	document.getElementById('templateLabel').innerHTML = fileName.match(/\w+(?:\.\w+)*$/)[0];
+});
+
 ipcRenderer.on('file-saved', _close);
 
-ipcRenderer.on('render-form', (event, _form) => {
+ipcRenderer.on('render: form', (event, _form) => {
 	FORM = _form
 	document.getElementById('landing').style.display = "none";
 	document.getElementById('formWrapper').style.display = "block";
@@ -67,14 +74,15 @@ ipcRenderer.on('render-form', (event, _form) => {
 })
 
 function _submit() {
-	var formValues = {};
+	var values = {};
 	FORM["fields"].forEach(field => {
 		id = field['id'];
-		formValues[id] = document.getElementById(id).value;
+		values[id] = document.getElementById(id).value;
 	})
-	ipcRenderer.send('submit-form', formValues);
+	ipcRenderer.send('submit: form', values);
 }
 
+// to main page
 function _close() {
 	document.getElementById('landing').style.display = "block";
 	document.getElementById('formWrapper').style.display = "none";
@@ -85,10 +93,25 @@ function _close() {
 }
 
 function _removeForm(id) {
-	ipcRenderer.send('remove-form', id);
+	ipcRenderer.send('remove: form', id);
 	ipcRenderer.send('load: recentFiles');
 }
 
 function _openForm(id) {
 	ipcRenderer.send('open: form', id);
+}
+
+function _viewExportOptions() {
+	document.getElementById('landing').style.display = "none";
+	document.getElementById('formWrapper').style.display = "none";
+	document.getElementById('exportOptionsWrapper').style.display = "block";
+	document.getElementById('toExportOptionsBtn').style.display = "none";
+	document.getElementById('toFormBtn').style.display = "block";
+}
+
+function _viewForm() {
+	document.getElementById('formWrapper').style.display = "block";
+	document.getElementById('exportOptionsWrapper').style.display = "none";
+	document.getElementById('toExportOptionsBtn').style.display = "block";
+	document.getElementById('toFormBtn').style.display = "none";
 }

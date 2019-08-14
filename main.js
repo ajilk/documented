@@ -42,7 +42,7 @@ ipcMain.on('load: recentFiles', (event) => {
 	});
 });
 
-ipcMain.on('load-form', (event) => {
+ipcMain.on('load: form', (event) => {
 	dialog.showOpenDialog(mainWindow, {
 		properties: ['openFile', 'multiSelections'],
 		defaultPath: __dirname,
@@ -57,14 +57,15 @@ ipcMain.on('load-form', (event) => {
 				if (forms == undefined || forms.length == 0)
 					recentFiles.insert({ name: formName, path: formFilePath });
 			});
-			event.sender.send('render-form', form);
+			event.sender.send('render: form', form);
 		}
 	}).catch(error => console.log(error));
 });
 
-ipcMain.on('submit-form', (event, values) => {
+
+ipcMain.on('submit: form', (event, values) => {
 	// Render then save
-	ejs.renderFile('newUser.md', values).then(result => {
+	ejs.renderFile('forms/newUser.md', values).then(result => {
 		dialog.showSaveDialog(mainWindow, {
 			title: "Save",
 			defaultPath: __dirname + '/newUser_FILLED.md',
@@ -83,7 +84,7 @@ ipcMain.on('submit-form', (event, values) => {
 	});
 });
 
-ipcMain.on('remove-form', (event, id) => {
+ipcMain.on('remove: form', (event, id) => {
 	recentFiles.remove({ _id: id });
 });
 
@@ -93,6 +94,6 @@ ipcMain.on('open: form', (event, id) => {
 		const path = form[0]['path']
 		const fields = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
 		recentFiles.insert({ name: form['name'], path: form['path'] });
-		event.sender.send('render-form', fields);
+		event.sender.send('render: form', fields);
 	});
 });

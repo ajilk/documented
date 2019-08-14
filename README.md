@@ -18,7 +18,6 @@ Takes the form fields and sends it to the render to render the specified fields.
 - [ ] export values/results to json, yaml
 - [ ] create logo/icon
 - [x] implement recently opened files
-- [ ] change close button to back button
 - [ ] (longterm) use React Framework for routing and forms
 - [ ] support for various types of inputs
 - [ ] support for input validation
@@ -26,4 +25,4 @@ Takes the form fields and sends it to the render to render the specified fields.
 - [ ] support for form creation (from within the app rather than from a file)
 - [ ] (longterm) modify form input locations (drag+drop style)
 - [ ] (longterm) indicate that there is more to the form (ex. 2/10 fields completed) (green slim bar on top indicating how much more to go)
-- [ ] 
+- [ ] pressing document gives different document options (yaml, json, md, tex)
