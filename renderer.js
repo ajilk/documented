@@ -2,6 +2,7 @@ const { ipcRenderer } = require('electron')
 
 const loadBtn = document.getElementById('loadBtn')
 const cancelBtn = document.getElementById('cancelBtn')
+const formatSelect = document.getElementById('formatSelect')
 const chooseTemplateBtn = document.getElementById('chooseTemplateBtn')
 let FORM
 
@@ -33,22 +34,28 @@ loadBtn.addEventListener('click', (event) => {
 	ipcRenderer.send('load: form');
 });
 
-cancelBtn.addEventListener('click', _close);
+cancelBtn.addEventListener('click', toLandingPage);
 
 chooseTemplateBtn.addEventListener('change', () => {
 	fileName = chooseTemplateBtn.value
-	// extract filename from path
 	document.getElementById('templateLabel').innerHTML = fileName.match(/\w+(?:\.\w+)*$/)[0];
 });
 
-ipcRenderer.on('file-saved', _close);
+formatSelect.addEventListener('change', () => {
+	// If md or tex
+	if (formatSelect.value > 2) {
+		console.log(formatSelect.value)
+		document.getElementById('templateOption').style.display = 'block';
+	}
+	else
+		document.getElementById('templateOption').style.display = 'none';
+});
+
+ipcRenderer.on('file-saved', toLandingPage);
 
 ipcRenderer.on('render: form', (event, _form) => {
 	FORM = _form
-	document.getElementById('landing').style.display = "none";
-	document.getElementById('formWrapper').style.display = "block";
-	document.getElementById('navbar').style.display = "block";
-	document.getElementById('formName').innerHTML = FORM["name"]
+	toFormPage()
 
 	const form = document.getElementById('form');
 	FORM["fields"].forEach(field => {
@@ -70,7 +77,6 @@ ipcRenderer.on('render: form', (event, _form) => {
 		formGroup.appendChild(input);
 		form.appendChild(formGroup);
 	});
-	formWrapper.insertBefore(form, document.getElementById('cancelBtn'));
 })
 
 function _submit() {
@@ -82,15 +88,6 @@ function _submit() {
 	ipcRenderer.send('submit: form', values);
 }
 
-// to main page
-function _close() {
-	document.getElementById('landing').style.display = "block";
-	document.getElementById('formWrapper').style.display = "none";
-	document.getElementById('navbar').style.display = "none";
-	var form = document.getElementById('form')
-	while (form.firstChild) form.removeChild(form.firstChild);
-	ipcRenderer.send('load: recentFiles');
-}
 
 function _removeForm(id) {
 	ipcRenderer.send('remove: form', id);
@@ -101,17 +98,43 @@ function _openForm(id) {
 	ipcRenderer.send('open: form', id);
 }
 
-function _viewExportOptions() {
-	document.getElementById('landing').style.display = "none";
+function toLandingPage() {
+	document.getElementById('navbar').style.display = "none";
+	document.getElementById('footer').style.display = "none";
+	document.getElementById('exportOptionsWrapper').style.display = "none";
+
+	document.getElementById('landingPage').style.display = "block";
 	document.getElementById('formWrapper').style.display = "none";
-	document.getElementById('exportOptionsWrapper').style.display = "block";
-	document.getElementById('toExportOptionsBtn').style.display = "none";
-	document.getElementById('toFormBtn').style.display = "block";
+
+	var form = document.getElementById('form')
+	while (form.firstChild) form.removeChild(form.firstChild);
+	ipcRenderer.send('load: recentFiles');
 }
 
-function _viewForm() {
+function toExportOptionsPage() {
+	document.getElementById('navbar').style.display = "block";
+	document.getElementById('footer').style.display = "block";
+	document.getElementById('exportOptionsWrapper').style.display = "block";
+	document.getElementById('toFormBtn').style.display = "block";
+	document.getElementById('documentBtn').style.display = "block";
+
+	document.getElementById('landingPage').style.display = "none";
+	document.getElementById('formName').innerHTML = FORM["name"]
+	document.getElementById('formWrapper').style.display = "none";
+	document.getElementById('cancelBtn').style.display = "none";
+	document.getElementById('toExportOptionsBtn').style.display = "none";
+}
+
+function toFormPage() {
 	document.getElementById('formWrapper').style.display = "block";
-	document.getElementById('exportOptionsWrapper').style.display = "none";
+	document.getElementById('cancelBtn').style.display = "block";
 	document.getElementById('toExportOptionsBtn').style.display = "block";
+	document.getElementById('navbar').style.display = "block";
+	document.getElementById('footer').style.display = "block";
+
+	document.getElementById('landingPage').style.display = "none";
+	document.getElementById('formName').innerHTML = FORM["name"]
+	document.getElementById('exportOptionsWrapper').style.display = "none";
 	document.getElementById('toFormBtn').style.display = "none";
+	document.getElementById('documentBtn').style.display = "none";
 }

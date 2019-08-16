@@ -23,18 +23,21 @@
   </head>
   <body>
     <div id="navbar" class="container px-0 mb-5">
-      <nav
-        class="navbar navbar-dark justify-content-between fixed-top px-5 mb-5"
-        style="background-color: rgb(39,44,49);"
-      >
-        <a id="formName" class="navbar-brand" href="#" onclick="return _close()"></a>
-        <button id="toExportOptionsBtn" type="button" class="btn btn-outline-light" onclick="_viewExportOptions()">
-          >
-        </button>
-        <button id="toFormBtn" type="button" class="btn btn-outline-light" onclick="_viewForm()"><</button>
+      <nav class="navbar navbar-dark justify-content-between fixed-top px-5 bg-39-44-49">
+        <a id="formName" class="navbar-brand" href="#" onclick="return toLandingPage()"></a>
+        <div id="toExportOptionsBtn" class="col-4 px-0">
+          <button type="button" class="btn btn-block btn-outline-light" onclick="toExportOptionsPage()">
+            next
+          </button>
+        </div>
+        <div id="toFormBtn" class="col-4 px-0">
+          <button class="btn btn-block btn-outline-light" onclick="toFormPage()">
+            back
+          </button>
+        </div>
       </nav>
     </div>
-    <div id="landing" class="container w-75 pt-5">
+    <div id="landingPage" class="container w-75 pt-5">
       <div class="col-12 text-center">
         <h1 class="display-4 font-weight-light">documented</h1>
       </div>
@@ -46,20 +49,20 @@
       </div>
       <!-- <iframe class="py-5 px-2" src="files.html" height="500px" width="100%" frameborder="0"></iframe> -->
     </div>
+
     <div id="formWrapper" class="container px-5 pt-3">
-      <form id="form"></form>
-      <button id="cancelBtn" class="btn btn-block btn-outline-danger">
-        cancel
-      </button>
+      <div class="mainView pt-3">
+        <form id="form"></form>
+      </div>
     </div>
-    <div id="exportOptionsWrapper" class="container w-75 px-5 pt-5">
-      <!-- format ex. yaml, json, md->pdf, tex->pdf -->
+
+    <div id="exportOptionsWrapper" class="mainView px-5 pt-5">
       <div class="row px-0 pb-3">
-        <div class="col-3 px-0 pr-auto my-auto">
+        <div class="col-2 pr-auto my-auto">
           <label class="my-0">Format: </label>
         </div>
-        <div class="col px-0">
-          <select class="custom-select">
+        <div class="col">
+          <select id="formatSelect" class="custom-select">
             <option value="1">YAML (.yml)</option>
             <option value="2">JSON (.json)</option>
             <option selected value="3">Markdown (.md)</option>
@@ -69,20 +72,29 @@
       </div>
       <!-- if md or tex -->
       <!-- then template -->
-      <div class="row px-0 pb-5">
+      <div id="templateOption" class="row px-3 pb-5">
         <div class="custom-file">
           <input type="file" class="custom-file-input" id="chooseTemplateBtn" />
           <label id="templateLabel" class="custom-file-label" for="customFile">Choose file</label>
         </div>
       </div>
-      <div class="row px-0">
-        <button id="documentBtn" type="button" class="btn btn-block btn-outline-dark" onclick="_submit()">
+    </div>
+
+    <navbar id="footer" class="navbar fixed-bottom navbar-dark py-2 px-0 bg-dark bg-39-44-49">
+      <div class="container px-5">
+        <button id="documentBtn" type="button" class="btn btn-block btn-success" onclick="_submit()">
           document
         </button>
       </div>
-    </div>
+      <div class="container px-5">
+        <button id="cancelBtn" type="button" class="btn btn-block btn-danger" onclick="toLandingPage()">
+          cancel
+        </button>
+      </div>
+    </navbar>
 
     <script src="./renderer.js"></script>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script

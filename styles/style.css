@@ -1,8 +1,5 @@
-* {
-  user-select: none;
-}
-
-#navbar {
+#navbar,
+#footer {
   display: none;
 }
 
@@ -10,32 +7,35 @@
   display: none;
 }
 
-#toFormBtn {
-  display: none;
-}
-
-#exportOptionsWrapper {
-  display: none;
+.bg-39-44-49 {
+  background-color: rgb(39, 44, 49) !important;
 }
 
 .recentForm:hover {
-	background-color: rgb(39,44,49);
-	color: white;
+  background-color: rgb(39, 44, 49);
+  color: white;
 }
 
 .recentForm button {
-	color: lightgray !important;
+  color: lightgray !important;
 }
 
 .recentForm button:hover {
-	color: white !important;
+  color: white !important;
 }
 
-.listView ul{
-	height: 200px;
-	width: 100%;
-	overflow: hidden;
-	overflow-y: scroll;
+.listView ul {
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.mainView {
+  height: 650px !important;
+  width: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 /* Disable orange focus outline */
@@ -45,6 +45,12 @@ button.active:focus,
 button.focus,
 button:active.focus,
 button.active.focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Hide other border outline when in focus */
+*:focus {
   outline: none !important;
   box-shadow: none !important;
 }
@@ -61,4 +67,9 @@ html {
 /* Optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
   background: #ff0000;
+}
+
+/* Disable selection */
+* {
+  user-select: none;
 }

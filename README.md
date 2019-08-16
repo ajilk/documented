@@ -26,3 +26,4 @@ Takes the form fields and sends it to the render to render the specified fields.
 - [ ] (longterm) modify form input locations (drag+drop style)
 - [ ] (longterm) indicate that there is more to the form (ex. 2/10 fields completed) (green slim bar on top indicating how much more to go)
 - [ ] pressing document gives different document options (yaml, json, md, tex)
+- [ ] (longterm longterm) preview of values that are being exported
