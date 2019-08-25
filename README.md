@@ -1,13 +1,8 @@
 # documented
 
-document custom documents using custom fields
+document templated documents using custom fields values
 
 ---
-
-## Idea
-
-Main process opens the form.yaml that specifies which fields to render.
-Takes the form fields and sends it to the render to render the specified fields.
 
 ## Features
 
