@@ -3,12 +3,13 @@
 // TODO: better channel naming
 
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const latex = require('node-latex');
 DataStore = require('nedb')
 yaml = require('js-yaml');
 fs = require('fs');
 ejs = require('ejs');
 
-let DEBUG = true
+let DEBUG = false
 let mainWindow;
 const recentFiles = new DataStore({ filename: './userConfig', autoload: true });
 
@@ -65,10 +66,10 @@ ipcMain.on('load: form', (event) => {
 
 ipcMain.on('submit: form', (event, values) => {
 	// Render then save
-	ejs.renderFile('forms/newUser.md', values).then(result => {
+	ejs.renderFile('forms/newUser.tex', values).then(result => {
 		dialog.showSaveDialog(mainWindow, {
 			title: "Save",
-			defaultPath: __dirname + '/newUser_FILLED.md',
+			defaultPath: __dirname + '/newUser_FILLED.tex',
 		}, (filename) => {
 			fs.writeFile(filename, result, (error) => {
 				if (error) {
@@ -77,6 +78,12 @@ ipcMain.on('submit: form', (event, values) => {
 						default: throw error;
 					}
 				} else {
+					const input = fs.createReadStream(filename);
+					const output = fs.createWriteStream('output.pdf');
+					const pdf = latex(input);
+					pdf.pipe(output)
+					pdf.on('finish', () => console.log('PDF generated' + filename));
+					pdf.on('error', (error) => console.log(error));
 					event.sender.send('file-saved', event)
 				}
 			})
