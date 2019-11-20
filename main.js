@@ -4,6 +4,7 @@
 
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const latex = require('node-latex');
+const temp = require('temp'); temp.track();
 DataStore = require('nedb')
 yaml = require('js-yaml');
 fs = require('fs');
@@ -31,6 +32,7 @@ function createWindow() {
 
 	mainWindow.loadFile('index.html');
 }
+
 
 app.on('ready', createWindow);
 app.on('window-all-closed', () => app.quit());
@@ -67,27 +69,14 @@ ipcMain.on('load: form', (event) => {
 ipcMain.on('submit: form', (event, values) => {
 	// Render then save
 	ejs.renderFile('forms/newUser.tex', values).then(result => {
-		dialog.showSaveDialog(mainWindow, {
-			title: "Save",
-			defaultPath: __dirname + '/newUser_FILLED.tex',
-		}, (filename) => {
-			fs.writeFile(filename, result, (error) => {
-				if (error) {
-					switch (error.code) {
-						case 'ENOENT': break; // Cancelled
-						default: throw error;
-					}
-				} else {
-					const input = fs.createReadStream(filename);
-					const output = fs.createWriteStream('output.pdf');
-					const pdf = latex(input);
-					pdf.pipe(output)
-					pdf.on('finish', () => console.log('PDF generated' + filename));
-					pdf.on('error', (error) => console.log(error));
-					event.sender.send('file-saved', event)
-				}
-			})
-		}).catch(error => console.log(error));
+		stream = temp.createWriteStream();
+		stream.write(result);
+		const output = fs.createWriteStream('output.pdf');
+		const pdf = latex(fs.createReadStream(stream.path));
+		pdf.pipe(output)
+		pdf.on('finish', () => console.log('PDF generated'));
+		pdf.on('error', (error) => console.log(error));
+		event.sender.send('file-saved', event)
 	});
 });
 

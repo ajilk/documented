@@ -17,6 +17,7 @@
 		"electron-store": "^4.0.0",
 		"js-yaml": "^3.13.1",
 		"nedb": "^1.8.0",
-		"node-latex": "^2.6.2"
+		"node-latex": "^2.6.2",
+		"temp": "^0.9.1"
 	}
 }
